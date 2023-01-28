@@ -7,6 +7,8 @@ import { UserModel } from "../models/UserModel";
 import { StoryModel } from "../models/StoryModel";
 import Modal from "../components/Modal";
 import Story from "../components/Story";
+import { useParams } from "react-router-dom";
+import { en, ptBr } from "../translation/strings";
 
 const cookies = new Cookies();
 
@@ -18,6 +20,18 @@ export default function ProfilePage() {
   const [stories, setStories] = useState<StoryModel[]>();
   const [selectedStory, setSelectedStory] = useState<StoryModel>();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [appLanguage, setAppLanguage] = useState<any>(en);
+  const { language } = useParams<string>();
+
+  useEffect(() => {
+    if (!language) {
+      setAppLanguage(en);
+    } else if (language === "pt"|| language === "br") {
+      setAppLanguage(ptBr);
+    } else {
+      setAppLanguage(en);
+    }
+  }, []);
 
   useEffect(() => {
     (async () => {
@@ -50,7 +64,7 @@ export default function ProfilePage() {
   }, [user]);
 
   return (
-    <MainLayout>
+    <MainLayout language={appLanguage}>
       <div className="w-full flex flex-col gap-2  center">
         <h1 className="text-themeTextSecondary text-5xl font-theme mx-auto mt-2">
           {user?.name}
@@ -73,13 +87,13 @@ export default function ProfilePage() {
         {!selectedStory && (
           <>
             <h2 className="text-4xl text-themeText font-theme mx-auto mt-10">
-              Minhas Histórias
+              {appLanguage["myStories"]}
             </h2>
 
             <div className="flex flex-wrap w-full md:px-12 gap-4 justify-center pt-8 mb-20">
-              {stories?.map((story) => {
+              {stories?.map((story, index) => {
                 return (
-                  <div className="lg:w-1/4 md:w-1/3 w-full flex flex-col border-2 gap-2 border-themeSecondary">
+                  <div key={index} className="lg:w-1/4 md:w-1/3 w-full flex flex-col border-2 gap-2 border-themeSecondary">
                     <img src={story.paragraphs[0].image_url} />
                     <p className="text-lg text-themeText font-theme">
                       {story.paragraphs[0].text.substring(0, 140) + " [...]"}
@@ -89,7 +103,7 @@ export default function ProfilePage() {
                       className="text-md font-action text-themeTextSecondary text-right hover:underline hover:font-semibold cursor-pointer"
                       onClick={() => handleSelectStory(story)}
                     >
-                      Ver história completa
+                      {appLanguage["seeFullStory"]}
                     </span>
                   </div>
                 );
@@ -99,9 +113,12 @@ export default function ProfilePage() {
         )}
         {selectedStory && (
           <div className="flex flex-col mb-20">
-            <Story story={selectedStory} />
-            <button onClick={() => setSelectedStory(undefined)} className="bg-themeTextSecondary w-fit mx-auto p-2 font-action mt-6">
-              Ver Todas as Histórias
+            <Story story={selectedStory} language={appLanguage} />
+            <button
+              onClick={() => setSelectedStory(undefined)}
+              className="bg-themeTextSecondary w-fit mx-auto p-2 font-action mt-6"
+            >
+              {appLanguage["seeAllStories"]}
             </button>
           </div>
         )}

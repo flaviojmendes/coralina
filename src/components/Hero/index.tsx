@@ -15,6 +15,7 @@ type Props = {
   setPlot: (plot: PlotModel) => void;
   setStory: (story: StoryModel) => void;
   setLoading: (loading: boolean) => void;
+  language: any;
 };
 
 export default function Hero({
@@ -25,6 +26,7 @@ export default function Hero({
   setLoading,
   apiError,
   setApiError,
+  language,
 }: Props) {
   const { loginWithRedirect, user, isAuthenticated, isLoading, logout } =
     useAuth0();
@@ -34,11 +36,11 @@ export default function Hero({
       <div className="flex flex-col gap-4 pt-4 lg:pt-20">
         <div className="flex">
           <h1 className="w-fit text-2xl md:text-5xl text-themeTextSecondary font-title font-semibold">
-            Era uma vez{" "}
+            {language["onceUponATime"]}{" "}
           </h1>
           <input
             className="mx-4 text-themeAccent bg-transparent border-b-4 border-b-themeSecondary text-center font-title text-lg md:text-2xl"
-            placeholder="protagonista"
+            placeholder={language["mainCharacter"]}
             value={plot.main_character}
             onChange={(e) => handleMainCharacterChange(e)}
           ></input>
@@ -49,11 +51,11 @@ export default function Hero({
         <div className="flex">
           <h1 className="w-fit text-2xl md:text-5xl text-themeTextSecondary font-title font-semibold">
             {" "}
-            juntamente com{" "}
+            {language["withTheirFriends"]}{" "}
           </h1>
           <input
             className="mx-4 text-themeAccent bg-transparent border-b-4 border-b-themeSecondary text-center font-title text-lg md:text-2xl"
-            placeholder="coadjuvante(s)"
+            placeholder={language["secondaryCharacters"]}
             value={plot.supporting_characters}
             onChange={(e) => handleSupportingCharacterChange(e)}
           ></input>
@@ -64,11 +66,11 @@ export default function Hero({
         <div className="flex">
           <h1 className="w-fit text-2xl md:text-5xl text-themeTextSecondary font-title font-semibold">
             {" "}
-            contra{" "}
+            {language["against"]}{" "}
           </h1>
           <input
             className="mx-4 text-themeAccent bg-transparent border-b-4 border-b-themeSecondary text-center font-title text-lg md:text-2xl"
-            placeholder="antagonista"
+            placeholder={language["villain"]}
             value={plot.villain}
             onChange={(e) => handleVillainChange(e)}
           ></input>
@@ -79,11 +81,11 @@ export default function Hero({
         <div className="flex">
           <h1 className="w-fit text-2xl md:text-5xl text-themeTextSecondary font-title font-semibold">
             {" "}
-            em{" "}
+            {language["in"]}{" "}
           </h1>
           <input
             className="mx-4 text-themeAccent bg-transparent border-b-4 border-b-themeSecondary text-center font-title text-lg md:text-2xl"
-            placeholder="detalhe, local, etc."
+            placeholder={language["detailPlace"]}
             value={plot.details}
             onChange={(e) => handleDetailsChange(e)}
           ></input>
@@ -94,18 +96,18 @@ export default function Hero({
         <div className="flex">
           <h1 className="w-fit text-2xl md:text-5xl text-themeTextSecondary font-title font-semibold">
             {" "}
-            com tema{" "}
+            {language["theme"]}{" "}
           </h1>
           <select
             onChange={(e) => handleThemeChange(e)}
             className="mx-4 text-themeAccent bg-transparent border-b-4 border-b-themeSecondary text-center font-title text-lg md:text-2xl"
           >
-            <option selected>selecione</option>
-            <option value="Romance">Romance</option>
-            <option value="Child">Infantil</option>
-            <option value="ScyFy">Ficção Científica</option>
-            <option value="Horror">Terror</option>
-            <option value="Motivacional">Motivacional</option>
+            <option selected>{language["select"]}</option>
+            <option value="Romance">{language["romance"]}</option>
+            <option value="Child">{language["child"]}</option>
+            <option value="ScyFy">{language["scyFy"]}</option>
+            <option value="Horror">{language["horror"]}</option>
+            <option value="Motivational">{language["motivational"]}</option>
           </select>
 
           <h1 className="w-fit text-2xl md:text-5xl text-themeTextSecondary font-title font-semibold">
@@ -131,7 +133,7 @@ export default function Hero({
               loading
             }
           >
-            Criar minha história
+            {language["writeMyStory"]}
           </button>
         )}
         {!isAuthenticated && (
@@ -155,9 +157,13 @@ export default function Hero({
     setLoading(true);
     setApiError(false);
     try {
+      let plotTemp: PlotModel = Object.assign(new PlotModel(), plot);
+
+      plotTemp.language = language["language"];
+
       const response = await axios.post<StoryModel>(
         import.meta.env.VITE_CORALINA_API_URL + "/generate",
-        plot,
+        plotTemp,
         {
           headers: {
             "Content-Type": "application/json",

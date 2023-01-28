@@ -6,4 +6,5 @@ export class PlotModel {
     villain?: string;
     details?: string;
     theme?: string;
+    language?: string;
 }

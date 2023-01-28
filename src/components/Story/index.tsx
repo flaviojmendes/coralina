@@ -2,12 +2,13 @@ import { StoryModel } from "../../models/StoryModel";
 
 type Props = {
   story: StoryModel;
+  language: any;
 };
 
-export default function Story({ story }: Props) {
+export default function Story({ story, language }: Props) {
   return (
     <section className="w-full flex flex-col mt-10">
-      <h2 className="text-4xl my-10 text-themeText font-theme">Minha História</h2>
+      <h2 className="text-4xl my-10 text-themeText font-theme">{language["myStory"]}</h2>
       {story.paragraphs.map((paragraph, index) => {
         return (
           <>
