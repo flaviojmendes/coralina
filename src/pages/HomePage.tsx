@@ -94,7 +94,7 @@ export default function HomePage() {
             </div>
           )}
 
-          {!loading && story && <Story story={story} language={language} />}
+          {!loading && story && <Story story={story} language={appLanguage} />}
         </div>
       </div>
     </MainLayout>
