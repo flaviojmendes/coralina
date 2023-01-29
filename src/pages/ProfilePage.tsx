@@ -47,31 +47,37 @@ export default function ProfilePage() {
   useEffect(() => {
     (async () => {
       if (user) {
-        setIsDataLoading(true);
-        const response = await axios.get(
-          import.meta.env.VITE_CORALINA_API_URL + "/user/" + user?.nickname,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: cookies.get("api_token"),
-            },
-          }
-        );
+        try {
+          setIsDataLoading(true);
+          const response = await axios.get(
+            import.meta.env.VITE_CORALINA_API_URL + "/user/" + user?.nickname,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: cookies.get("api_token"),
+              },
+            }
+          );
 
-        setUserData(response.data);
+          setUserData(response.data);
 
-        const storiesResponse = await axios.get(
-          import.meta.env.VITE_CORALINA_API_URL + "/stories/" + user?.nickname,
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: cookies.get("api_token"),
-            },
-          }
-        );
+          const storiesResponse = await axios.get(
+            import.meta.env.VITE_CORALINA_API_URL +
+              "/stories/" +
+              user?.nickname,
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: cookies.get("api_token"),
+              },
+            }
+          );
 
-        setStories(storiesResponse.data);
-        setIsDataLoading(false);
+          setStories(storiesResponse.data);
+          setIsDataLoading(false);
+        } catch (e) {
+          logout();
+        }
       }
     })();
   }, [user]);
@@ -80,7 +86,6 @@ export default function ProfilePage() {
     <MainLayout language={appLanguage}>
       <div className="w-full flex flex-col gap-2  center">
         {isDataLoading && (
-
           <RotatingSquare
             height="300"
             width="300"
