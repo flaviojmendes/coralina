@@ -11,6 +11,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     <Auth0Provider
         domain="coralina.us.auth0.com"
         clientId="Daj57uyoegjCZqJTJwUgkFXHsZ1kt73X"
+        cacheLocation="localstorage"
         authorizationParams={{
           audience: "https://coralina.us.auth0.com/api/v2/",
           redirect_uri: window.location.origin + "/login"

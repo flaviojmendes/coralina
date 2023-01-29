@@ -9,6 +9,7 @@ import Hero from "../components/Hero";
 import Story from "../components/Story";
 import { useParams } from "react-router-dom";
 import { en, ptBr } from "../translation/strings";
+import { useLocalStorage } from "react-use";
 
 export default function HomePage() {
   let [plot, setPlot] = useState<PlotModel>({});
@@ -17,15 +18,26 @@ export default function HomePage() {
   const [apiError, setApiError] = useState(false);
   const [appLanguage, setAppLanguage] = useState<any>(en);
   const { language } = useParams<string>();
-
+  const [outOfTokens, setOutOfTokens] = useState(false);
+  const [appLanguageStored, setAppLanguageStored] = useLocalStorage(
+    "appLanguage",
+    "en"
+  );
   useEffect(() => {
-    if (!language) {
-      setAppLanguage(en);
+
+    if (!language && !appLanguageStored) {
+      setAppLanguage(en)
     } else if (language === "pt" || language === "br") {
       setAppLanguage(ptBr);
-    } else {
+      setAppLanguageStored("pt")
+    } else if (language === 'en') {
       setAppLanguage(en);
+      setAppLanguageStored("en");
+    }  else if(appLanguageStored === 'pt') {
+      setAppLanguage(ptBr);
     }
+    
+    
   }, []);
 
   return (
@@ -42,6 +54,8 @@ export default function HomePage() {
               setPlot={setPlot}
               setLoading={setLoading}
               language={appLanguage}
+              outOfTokens={outOfTokens}
+              setOutOfTokens={setOutOfTokens}
             />
           }
           {loading && (
@@ -56,7 +70,7 @@ export default function HomePage() {
                 backgroundColor="#67eaa2"
               />
               <h3 className="text-xl text-themeText font-theme my-auto">
-                {appLanguage['writingStory']}
+                {appLanguage["writingStory"]}
               </h3>
               <div className="grow"></div>
             </div>
@@ -65,9 +79,17 @@ export default function HomePage() {
             <div className="w-full flex mt-20">
               <div className="grow"></div>
 
-              <h3 className="text-xl text-themeAccent font-theme my-auto">
-                {appLanguage['storyError']}
-              </h3>
+              {!outOfTokens && (
+                <h3 className="text-xl text-themeAccent font-theme my-auto">
+                  {appLanguage["storyError"]}
+                </h3>
+              )}
+
+              {outOfTokens && (
+                <h3 className="text-xl text-themeAccent font-theme my-auto">
+                  {appLanguage["outOfTokens"]}
+                </h3>
+              )}
               <div className="grow"></div>
             </div>
           )}
