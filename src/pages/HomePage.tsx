@@ -10,6 +10,8 @@ import Story from "../components/Story";
 import { useParams } from "react-router-dom";
 import { en, ptBr } from "../translation/strings";
 import { useLocalStorage } from "react-use";
+import Banner from "../components/Banner";
+import { FaDollarSign } from "react-icons/fa";
 
 export default function HomePage() {
   let [plot, setPlot] = useState<PlotModel>({});
@@ -24,26 +26,24 @@ export default function HomePage() {
     "en"
   );
   useEffect(() => {
-
     if (!language && !appLanguageStored) {
-      setAppLanguage(en)
+      setAppLanguage(en);
     } else if (language === "pt" || language === "br") {
       setAppLanguage(ptBr);
-      setAppLanguageStored("pt")
-    } else if (language === 'en') {
+      setAppLanguageStored("pt");
+    } else if (language === "en") {
       setAppLanguage(en);
       setAppLanguageStored("en");
-    }  else if(appLanguageStored === 'pt') {
+    } else if (appLanguageStored === "pt") {
       setAppLanguage(ptBr);
     }
-    
-    
   }, []);
 
   return (
     <MainLayout language={appLanguage}>
       <div className="w-full overflow-hidden p-2">
         <div className="flex flex-col mx-auto bg-storyLight mt-8 rounded-md px-4 md:px-36">
+          <Banner language={appLanguage} />
           {
             <Hero
               apiError={apiError}
@@ -86,8 +86,17 @@ export default function HomePage() {
               )}
 
               {outOfTokens && (
-                <h3 className="text-xl text-themeAccent font-theme my-auto">
-                  {appLanguage["outOfTokens"]}
+                <h3 className="text-xl flex-col md:flex text-themeAccent font-theme my-auto">
+                  <span className="my-auto mr-2">{appLanguage["outOfTokens"]}</span>
+                  <a
+                    className="bg-themeTextSecondary text-themeBackground my-auto p-2 rounded-sm mx-auto w-fit flex"
+                    target={"_blank"}
+                    href="https://flaviojmendes.gumroad.com/l/coralina"
+                    data-gumroad-overlay-checkout="true"
+                  >
+                    <FaDollarSign className="my-auto" />
+                    {appLanguage["buyTokens"]}
+                  </a>
                 </h3>
               )}
               <div className="grow"></div>

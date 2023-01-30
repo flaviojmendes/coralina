@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import { en, ptBr } from "../translation/strings";
 import { useLocalStorage } from "react-use";
 import { RotatingSquare } from "react-loader-spinner";
+import { FaDollarSign } from "react-icons/fa";
 
 const cookies = new Cookies();
 
@@ -103,20 +104,19 @@ export default function ProfilePage() {
               {user?.name}
             </h1>
             <div className="flex m-auto gap-2">
-              <span className="text-xl text-themeSecondary font-theme font-semibold">
+              <span className="text-xl my-auto text-themeSecondary font-theme font-semibold">
                 Tokens:{" "}
               </span>
-              <span className="text-xl text-themeTextSecondary font-theme">
+              <span className="text-xl my-auto text-themeTextSecondary font-theme">
                 {userData?.tokens}{" "}
               </span>
-            </div>
-            <div className="flex">
               <a
-                className="gumroad-button mx-auto"
+                className="bg-themeTextSecondary p-2 rounded-sm mx-auto flex"
                 target={"_blank"}
                 href="https://flaviojmendes.gumroad.com/l/coralina"
                 data-gumroad-overlay-checkout="true"
               >
+                <FaDollarSign className="my-auto"/>
                 {appLanguage["buyTokens"]}
               </a>
             </div>

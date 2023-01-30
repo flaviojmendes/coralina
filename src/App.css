@@ -34,3 +34,10 @@ div.book {
     transform: skew(0deg, 10deg);
     z-index: -1;
   }
+
+
+.cart-button {
+  margin-top: 50px !important;
+}
+
+.widget { display: none !important; }

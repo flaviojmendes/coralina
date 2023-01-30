@@ -34,7 +34,7 @@ export const ptBr = {
   do: "Faça",
   toStart: " para começar",
 
-  outOfTokens: "Seus tokens acabaram ☹️, mas você pode comprar mais na sua página de perfil! 🎉",
+  outOfTokens: "Seus tokens acabaram ☹️, mas você pode comprar mais: ",
   buyTokens: "comprar tokens ",
 
   about: "Coralina nasceu para escrever. Utilizando Inteligência Artificial ela é capaz de dar asas à sua imaginação.",
@@ -79,7 +79,7 @@ export const en = {
   do: "",
   toStart: " to start",
 
-  outOfTokens: "You're out of tokens ☹️, but you can buy more in your profile page! 🎉",
+  outOfTokens: "You're out of tokens ☹️, but you can buy more: ",
   buyTokens: "buy tokens ",
 
   about: "Coralina was born to write. Using Artificial Intelligence she is capable of giving your imagination wings.",
